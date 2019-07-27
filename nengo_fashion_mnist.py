@@ -139,6 +139,7 @@ test_inputs = test_inputs[:, None, :]
 
 with nengo_loihi.Simulator(net) as sim:
     sim.step(data={input_node: test_inputs})
+    
 
 tensornode_output = sim.data[keras_p]
 
