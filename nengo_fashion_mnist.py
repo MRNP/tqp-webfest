@@ -137,9 +137,17 @@ test_inputs = test_inputs[:, None, :]
 # with nengo_dl.Simulator(net, minibatch_size=minibatch_size) as sim:
 #     sim.step(data={input_node: test_inputs})
 
+n_presentations = 50
+presentation_time = 0.1  # input presentation time
 with nengo_loihi.Simulator(net) as sim:
     sim.step(data={input_node: test_inputs})
-    
+    # if running on Loihi, increase the max input spikes per step
+    if 'loihi' in sim.sims:
+        sim.sims['loihi'].snip_max_spikes_per_step = 120
+
+
+    # run the simulation on Loihi
+    sim.run(n_presentations * presentation_time)
 
 tensornode_output = sim.data[keras_p]
 
