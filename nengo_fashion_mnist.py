@@ -134,11 +134,11 @@ test_inputs = test_inputs.reshape((-1, net_input_shape))
 # in this case we'll just run for a single timestep).
 test_inputs = test_inputs[:, None, :]
 
-with nengo_dl.Simulator(net, minibatch_size=minibatch_size) as sim:
-    sim.step(data={input_node: test_inputs})
-
-# with nengo_loihi.Simulator(net, minibatch_size=minibatch_size) as sim:
+# with nengo_dl.Simulator(net, minibatch_size=minibatch_size) as sim:
 #     sim.step(data={input_node: test_inputs})
+
+with nengo_loihi.Simulator(net) as sim:
+    sim.step(data={input_node: test_inputs})
 
 tensornode_output = sim.data[keras_p]
 
